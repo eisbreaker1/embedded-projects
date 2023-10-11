@@ -1,0 +1,5 @@
+../Core/Src/MAX30102.c:12:8:ReadDataFromFIFO	40	static
+../Core/Src/MAX30102.c:21:6:StoreIrData	8	static
+../Core/Src/MAX30102.c:27:6:StoreRedData	8	static
+../Core/Src/MAX30102.c:33:6:ReadOperation	16	static
+../Core/Src/MAX30102.c:45:6:MAX30100_Init	48	static
