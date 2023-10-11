@@ -60,8 +60,8 @@ all: main-build
 main-build: MAX30100_Beat_detection.elf secondary-outputs
 
 # Tool invocations
-MAX30100_Beat_detection.elf MAX30100_Beat_detection.map: $(OBJS) $(USER_OBJS) C:\Users\Janek\STM32CubeIDE\embedded-projects\MAX30100_Beat_detection\STM32F411VETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "MAX30100_Beat_detection.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\Janek\STM32CubeIDE\embedded-projects\MAX30100_Beat_detection\STM32F411VETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MAX30100_Beat_detection.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+MAX30100_Beat_detection.elf MAX30100_Beat_detection.map: $(OBJS) $(USER_OBJS) C:\Users\Janek\STM32CubeIDE\workspace_1.9.0\Projekt\ pulsoksymetr\STM32F411VETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "MAX30100_Beat_detection.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\Janek\STM32CubeIDE\workspace_1.9.0\Projekt pulsoksymetr\STM32F411VETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MAX30100_Beat_detection.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
