@@ -34,6 +34,61 @@
 #define PULSE_MIN_THRESHOLD		35
 #define PULSE_FALL_THRESHOLD	30
 #define BPM_SAMPLE_SIZE			10
+#define MIN_PULSE_DURATION		200
+
+#define MODE_UNUSED 			0
+#define MODE_HR_ONLY 			(1<<1)
+#define MODE_SPO2_EN			(1<<1)|(1<<0)
+
+#define SAMPLE_RATE_50			0
+#define SAMPLE_RATE_100			(1<<2)
+#define SAMPLE_RATE_167			(1<<3)
+#define SAMPLE_RATE_200			(1<<3)|(1<<2)
+#define SAMPLE_RATE_400			(1<<4)
+#define SAMPLE_RATE_600			(1<<4)|(1<<2)
+#define SAMPLE_RATE_800			(1<<4)|(1<<3)
+#define SAMPLE_RATE_1000		(1<<4)|(1<<3)|(1<<2)
+
+#define PULSE_WIDTH_200			0
+#define PULSE_WIDTH_400			(1<<0)
+#define PULSE_WIDTH_800			(1<<1)
+#define PULSE_WIDTH_1600		(1<<1)|(1<<0)
+
+#define	IR_PA_0				0
+#define	IR_PA_4_4				(1<<0)
+#define	IR_PA_7_6				(1<<1)
+#define	IR_PA_11				(1<<1)|(1<<0)
+#define	IR_PA_14_2				(1<<2)
+#define	IR_PA_17_4				(1<<2)|(1<<0)
+#define	IR_PA_20_8				(1<<2)|(1<<1)
+#define	IR_PA_24				(1<<2)|(1<<1)|(1<<0)
+#define	IR_PA_27_1				(1<<3)
+#define	IR_PA_30_6				(1<<3)|(1<<0)
+#define	IR_PA_33_8				(1<<3)|(1<<1)
+#define	IR_PA_37				(1<<3)|(1<<1)|(1<<0)
+#define	IR_PA_40_2				(1<<3)|(1<<2)
+#define	IR_PA_43_6				(1<<3)|(1<<2)|(1<<0)
+#define	IR_PA_46_8				(1<<3)|(1<<2)|(1<<1)
+#define	IR_PA_50				(1<<3)|(1<<2)|(1<<1)|(1<<0)
+
+#define	RED_PA_0				0
+#define	RED_PA_4_4				(1<<4)
+#define	RED_PA_7_6				(1<<5)
+#define	RED_PA_11				(1<<5)|(1<<4)
+#define	RED_PA_14_2				(1<<6)
+#define	RED_PA_17_4				(1<<6)|(1<<4)
+#define	RED_PA_20_8				(1<<6)|(1<<5)
+#define	RED_PA_24				(1<<6)|(1<<5)|(1<<4)
+#define	RED_PA_27_1				(1<<7)
+#define	RED_PA_30_6				(1<<7)|(1<<4)
+#define	RED_PA_33_8				(1<<7)|(1<<5)
+#define	RED_PA_37				(1<<7)|(1<<5)|(1<<4)
+#define	RED_PA_40_2				(1<<7)|(1<<6)
+#define	RED_PA_43_6				(1<<7)|(1<<6)|(1<<4)
+#define	RED_PA_46_8				(1<<7)|(1<<6)|(1<<5)
+#define	RED_PA_50				(1<<7)|(1<<6)|(1<<5)|(1<<4)
+
+
 
 enum States
 {

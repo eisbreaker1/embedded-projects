@@ -15,7 +15,13 @@ extern float bpmTable[BPM_SAMPLE_SIZE];
 extern uint16_t bpmIndex;
 extern UART_HandleTypeDef huart2;
 
-
+/*
+ * @fn- 				ReadDataFromFIFO
+ * @brief 				Reads the data from FIFO and stores it in a LEDBuf type variable
+ * @param[in] 			uint8_t* Buf
+ * @return				LEDBuf Data
+ * @Note				None
+ */
 LEDBuf ReadDataFromFIFO(uint8_t* Buf)
 {
 	LEDBuf Led;
@@ -37,6 +43,15 @@ void StoreRedData(LEDBuf Led)
 	RedLED.CurrentVal = Led.RVal;
 }
 
+/*
+ * @fn- 				DCRemoval
+ * @brief 				Applies a DC value removing filter to the unfiltered data
+ * @param[in] 			LEDValue* RawLed
+ *						dcFilter* Filter
+ *						float alpha
+ * @return				float FilteredValue
+ * @Note				None
+ */
 float DCRemoval(LEDValue* RawLed, dcFilter* Filter, float alpha)
 {
 	Filter->w = RawLed->CurrentVal + alpha * Filter->prev_w;
@@ -45,6 +60,14 @@ float DCRemoval(LEDValue* RawLed, dcFilter* Filter, float alpha)
 	return Filter->result;
 }
 
+/*
+ * @fn- 				meanDiff
+ * @brief 				Applies a mean diff filter to the data
+ * @param[in] 			float LEDval Unfiltered LED data
+ *						mean_diff_filter_t* Filter - a pointer to a filter data structure
+ * @return				float FilteredValue
+ * @Note				None
+ */
 float meanDiff(float LEDval, mean_diff_filter_t* Filter)
 {
 	float avg = 0;
@@ -63,6 +86,15 @@ float meanDiff(float LEDval, mean_diff_filter_t* Filter)
 	return avg;
 }
 
+
+/*
+ * @fn- 				ButterworthFilter
+ * @brief 				Applies a Butterworth filter to the data
+ * @param[in] 			float LEDval Unfiltered LED data
+ *						butterworth_filter_t* Filter
+ * @return				float FilteredValue
+ * @Note				None
+ */
 float ButterworthFilter(float LEDval, butterworth_filter_t* Filter)
 {
 	Filter->v[0] = Filter->v[1];
@@ -70,14 +102,20 @@ float ButterworthFilter(float LEDval, butterworth_filter_t* Filter)
 	//Fs = 100Hz and Fc = 10Hz
 	Filter->v[1] = (2.452372752527856026e-1 * LEDval) + (0.50952544949442879485 * Filter->v[0]);
 
-	//Fs = 100Hz and Fc = 4Hz
-	//Filter->v[1] = (1.367287359973195227e-1 * LEDval) + (0.72654252800536101020 * Filter->v[0]); //Very precise butterworth filter
-
 	Filter->result = Filter->v[0] + Filter->v[1];
 	return Filter->result;
 }
 
 
+/*
+ * @fn- 				ReadOperation
+ * @brief 				Stores data from the buffer and stores it in global variable
+ * @param[in] 			void
+ *
+ * @return				void
+ *
+ * @Note				None
+ */
 void ReadOperation(void)
 {
 	uint8_t Buf[2];
@@ -87,9 +125,18 @@ void ReadOperation(void)
 	//StoreRedData(Led);
 }
 
+/*
+ * @fn- 				ReadOperation
+ * @brief 				Function detects and calculates the pulse.
+ * @param[in] 			float curSensorValue - IR LED data read from the sensor
+ *
+ * @return				uint16_t Beat - BPM value if peak is found
+ * 						0 if peak is not found yet
+ *
+ * @Note				None
+ */
 uint16_t BeatDetection(float curSensorValue)
 {
-	static float prevSensorValue = 0;
 	static uint32_t currentBeatValue = 0;
 	static uint32_t lastBeat = 0;
 	static int valuesBPMCount = 0;
@@ -98,7 +145,6 @@ uint16_t BeatDetection(float curSensorValue)
 	if(curSensorValue > PULSE_MAX_THRESHOLD)
 	{
 		Beat_State = IDLE_State;
-		prevSensorValue = 0;
 		lastBeat = 0;
 		currentBeatValue = 0;
 		return 0;
@@ -116,7 +162,7 @@ uint16_t BeatDetection(float curSensorValue)
 	{
 			currentBeatValue = timestamp();
 			uint32_t Duration = currentBeatValue - lastBeat;
-			if (Duration < 200)
+			if (Duration < MIN_PULSE_DURATION)
 			{
 				Beat_State = IDLE_State;
 				break;
@@ -159,29 +205,44 @@ uint16_t BeatDetection(float curSensorValue)
 		break;
 	}
 	}
-	prevSensorValue = curSensorValue;
 
 	return 0;
 }
 
-
+/*
+ * @fn- 				MAX30100_Init
+ * @brief 				Returns the time in ms
+ * @param[in] 			uint32 time
+ *
+ * @return				void
+ *
+ * @Note				None
+ */
 uint32_t timestamp()
 {
 	return (uint32_t)__HAL_TIM_GET_COUNTER(&htim2);
 }
 
+
+
+/*
+ * @fn- 				MAX30100_Init
+ * @brief 				Initializes the MAX30100_Init sensor
+ * @param[in] 			void
+ *
+ * @return				void
+ *
+ * @Note				None
+ */
 void MAX30100_Init(void)
 {
-	uint8_t Settings = (2<<0);
+	uint8_t Settings = MODE_HR_ONLY;
 	HAL_I2C_Mem_Write(&hi2c1, MAX30100_ADDR, MODE_CFG_REG, 1, &Settings, 1, 50);
 
 	Settings = (1<<2)|(3<<0);
 	HAL_I2C_Mem_Write(&hi2c1, MAX30100_ADDR, SPO2_CFG_REG, 1, &Settings, 1, 50);
 
-	//Settings = (1<<5)|(1<<7);
-	//HAL_I2C_Mem_Write(&hi2c1, MAX30100_ADDR, ITR_EN_REG, 1, &Settings, 1, 50);
-
-	Settings =(6<<0);//|(6<<4);
+	Settings =(6<<0);
 	HAL_I2C_Mem_Write(&hi2c1, MAX30100_ADDR, LED_CFG_REG, 1, &Settings, 1, 50);
 
 
