@@ -3,7 +3,7 @@ This is a repository to store some of my projects. Most of the time I was using 
 
 ![uklad](https://github.com/eisbreaker1/embedded-projects/assets/115368545/cea09982-72dc-4534-aff6-d64bb8ab9872)
 
-![uklad](https://github.com/eisbreaker1/embedded-projects/assets/115368545/4cfcb748-e9da-42f1-9a25-df0cbfbfb8e9)
+![uklad](https://github.com/eisbreaker1/embedded-projects/assets/115368545/d222db07-d9e9-4ec4-91e5-08d2d4f18b43)
 
 ![butterworth](https://github.com/eisbreaker1/embedded-projects/assets/115368545/d6647913-5d32-4dd1-ba20-1f7d94376836)
 
